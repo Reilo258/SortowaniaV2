@@ -18,12 +18,13 @@ class MainActivity : AppCompatActivity() {
         fun removeLastItem(array: IntArray): IntArray {
             return array.copyOf(array.lastIndex)
         }
-
+        // funkcja czyszcząca tablicę
         fun czysc() {
             for (i in 0..tab.size - 1) {
                 tab = removeLastItem(tab)
             }
         }
+
 
         // sortowanie Rabina-Karpa
         fun rabinKarpSort(arr: IntArray) {
@@ -59,6 +60,7 @@ class MainActivity : AppCompatActivity() {
                 exp *= bucketSize
             }
         }
+
 
         // sortowanie Bayera-Moore'a
         fun bayerMooreSort(arr: IntArray) {
@@ -115,6 +117,22 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+        // sortowanie BruteForce
+        fun bruteForceSort(arr: IntArray) {
+            val n = arr.size
+            for (i in 0 until n-1) {
+                for (j in i+1 until n) {
+                    if (arr[j] < arr[i]) {
+                        val tmp = arr[i]
+                        arr[i] = arr[j]
+                        arr[j] = tmp
+                    }
+                }
+            }
+        }
+
+
+        // funkcja z losowaniem oraz typowaniem sortowania
         fun losuj(ile: Int, ktore: Int) {
             czysc()
             for (i in 0..ile - 1) {
@@ -127,11 +145,13 @@ class MainActivity : AppCompatActivity() {
                 bayerMooreSort(tab)
             else if(ktore == 3) // KMP
                 kmpSort(tab)
+            else // Brute Force
+                bruteForceSort(tab)
 
         }
 
 
-
+        // przycisk do wykonania
         findViewById<Button>(R.id.button).setOnClickListener {
             var rkStart = System.currentTimeMillis()
             for(i in 0..findViewById<EditText>(R.id.iler).text.toString().toInt())
@@ -156,10 +176,6 @@ class MainActivity : AppCompatActivity() {
                 losuj(findViewById<EditText>(R.id.ilee).text.toString().toInt(), 4)
             var bfTime = System.currentTimeMillis() - bfStart;
             findViewById<TextView>(R.id.bflbl).text = bfTime.toString() + " milisekund"
-
-
         }
-
-
     }
 }
