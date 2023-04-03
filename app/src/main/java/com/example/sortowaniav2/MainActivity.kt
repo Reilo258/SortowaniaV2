@@ -90,6 +90,31 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+        // sortowanie KMP
+        fun kmpSort(arr: IntArray) {
+            val n = arr.size
+            val pi = IntArray(n)
+            for (i in 1 until n) {
+                var j = pi[i-1]
+                while (j > 0 && arr[i] < arr[j]) {
+                    j = pi[j-1]
+                }
+                if (arr[i] == arr[j]) {
+                    j++
+                }
+                pi[i] = j
+            }
+            for (i in n-1 downTo 1) {
+                val j = pi[i]
+                if (j > 0) {
+                    val tmp = arr[i]
+                    arr[i] = arr[j]
+                    arr[j] = tmp
+                }
+            }
+        }
+
+
         fun losuj(ile: Int, ktore: Int) {
             czysc()
             for (i in 0..ile - 1) {
@@ -100,6 +125,8 @@ class MainActivity : AppCompatActivity() {
                 rabinKarpSort(tab)
             else if(ktore == 2) // Bayer-Moore
                 bayerMooreSort(tab)
+            else if(ktore == 3) // KMP
+                kmpSort(tab)
 
         }
 
