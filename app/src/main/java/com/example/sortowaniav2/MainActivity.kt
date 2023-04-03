@@ -60,6 +60,35 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // sortowanie Bayera-Moore'a
+        fun bayerMooreSort(arr: IntArray) {
+            val n = arr.size
+            val bucketStarts = IntArray(256) { 0 }
+            val bucket1 = IntArray(256) { 0 }
+            val bucket2 = IntArray(256) { 0 }
+            var currentBucket = 0
+
+            for (shift in 0 until 32 step 8) {
+                for (i in 0 until 256) {
+                    bucket1[i] = 0
+                }
+                for (i in 0 until n) {
+                    val digit = (arr[i] ushr shift) and 0xff
+                    bucket1[digit]++
+                }
+                bucketStarts[0] = 0
+                for (i in 1 until 256) {
+                    bucketStarts[i] = bucketStarts[i-1] + bucket1[i-1]
+                }
+                for (i in 0 until n) {
+                    val digit = (arr[i] ushr shift) and 0xff
+                    bucket2[bucketStarts[digit]] = arr[i]
+                    bucketStarts[digit]++
+                }
+                System.arraycopy(bucket2, 0, arr, 0, n)
+            }
+        }
+
 
         fun losuj(ile: Int, ktore: Int) {
             czysc()
@@ -69,7 +98,9 @@ class MainActivity : AppCompatActivity() {
 
             if(ktore == 1) // Rabina-Karpa
                 rabinKarpSort(tab)
-            
+            else if(ktore == 2) // Bayer-Moore
+                bayerMooreSort(tab)
+
         }
 
 
